@@ -1,0 +1,35 @@
+package com.guigarage.fx.grid.cell;
+
+import com.guigarage.fx.grid.GridCell;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
+public class DefaultGridCell<T> extends GridCell<T> {
+
+	public DefaultGridCell() {
+		itemProperty().addListener(new ChangeListener<T>() {
+
+			@Override
+			public void changed(ObservableValue<? extends T> arg0, T arg1,
+					T arg2) {
+				if(arg2 == null) {
+					setText("");
+				} else {
+					setText(arg2.toString());
+				}
+			}
+		});
+		setStyle("-fx-border-color: black;");
+	}
+	
+	@Override
+	protected void updateItem(T item, boolean empty) {
+		super.updateItem(item, empty);
+		if(empty) {
+			setText("");
+		} else {
+			setText(item.toString());
+		}
+	}
+}
