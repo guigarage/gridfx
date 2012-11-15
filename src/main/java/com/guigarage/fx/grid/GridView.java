@@ -9,8 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
 import javafx.util.Callback;
 
-import com.guigarage.fx.grid.skin.GridViewSkin;
-
 public class GridView<T> extends Control {
 
 	// Inhalt des Grid
@@ -32,7 +30,7 @@ public class GridView<T> extends Control {
 	}
 
 	public GridView(ObservableList<T> items) {
-		setSkinClassName(GridViewSkin.class.getName());
+		getStyleClass().add("grid-view");
 		setItems(items);
         setCellHeight(40);
         setCellWidth(60);
@@ -129,5 +127,10 @@ public class GridView<T> extends Control {
 			items = new SimpleObjectProperty<ObservableList<T>>(this, "items");
 		}
 		return items;
+	}
+	
+	@Override
+	protected String getUserAgentStylesheet() {
+		return GridView.class.getResource("gridview.css").toExternalForm();
 	}
 }

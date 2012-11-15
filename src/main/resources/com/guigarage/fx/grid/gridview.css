@@ -1,0 +1,11 @@
+.grid-view {
+	-fx-skin: "com.guigarage.fx.grid.skin.GridViewSkin";
+}
+
+.grid-cell {
+	-fx-skin: "com.guigarage.fx.grid.skin.GridCellSkin";
+}
+
+.color-grid-cell {
+	-fx-skin: "com.guigarage.fx.grid.skin.GridCellSkin";
+}
