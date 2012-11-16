@@ -9,3 +9,9 @@
 .color-grid-cell {
 	-fx-skin: "com.guigarage.fx.grid.skin.GridCellSkin";
 }
+.image-grid-cell {
+	-fx-skin: "com.guigarage.fx.grid.skin.GridCellSkin";
+}
+.media-grid-cell {
+	-fx-skin: "com.guigarage.fx.grid.skin.GridCellSkin";
+}
