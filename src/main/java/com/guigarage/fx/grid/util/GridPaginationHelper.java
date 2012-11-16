@@ -66,12 +66,7 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 										items.size())));
 				gridView.setItems(currentItems);
 				gridView.setCellFactory(GridPaginationHelper.this.gridCellFactory);
-//
-//				GridPaginationHelper.this.cellHeightProperty().setValue(gridView.getCellHeight());
-//				GridPaginationHelper.this.cellWidthProperty().setValue(gridView.getCellWidth());
-//				GridPaginationHelper.this.verticalCellSpacingProperty().setValue(gridView.getVerticalCellSpacing());
-//				GridPaginationHelper.this.horizontalCellSpacingProperty().setValue(gridView.getHorizontalCellSpacing());
-//				
+
 				gridView.cellHeightProperty().bind(GridPaginationHelper.this.cellHeightProperty());
 				gridView.cellWidthProperty().bind(GridPaginationHelper.this.cellWidthProperty());
 				gridView.horizontalCellSpacingProperty().bind(GridPaginationHelper.this.horizontalCellSpacingProperty());
@@ -163,8 +158,6 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 
 	private void update() {
 		pagination.setPageCount(calcPageCount());
-		pagination.setCurrentPageIndex(0);
-		pagination.setPageFactory(pageFactory);
 	}
 
 	private int calcMaxVisibleCellsPerPage() {

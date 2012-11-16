@@ -164,7 +164,7 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 			}
 			child.relocate(xPos, yPos);
 			child.resize(cellWidth, cellHeight);
-			xPos = xPos + cellWidth + horizontalCellSpacing;
+			xPos = xPos + cellWidth + horizontalCellSpacing + horizontalCellSpacing;
 		}
 	}
 

@@ -33,7 +33,7 @@ public class GridView<T> extends Control {
 		getStyleClass().add("grid-view");
 		setItems(items);
         setCellHeight(40);
-        setCellWidth(60);
+        setCellWidth(40);
         setHorizontalCellSpacing(10);
         setVerticalCellSpacing(10);
 	}
