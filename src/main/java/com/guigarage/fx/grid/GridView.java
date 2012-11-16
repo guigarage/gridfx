@@ -28,7 +28,7 @@ public class GridView<T> extends Control {
 	public GridView() {
 		this(FXCollections.<T> observableArrayList());
 	}
-
+	
 	public GridView(ObservableList<T> items) {
 		getStyleClass().add("grid-view");
 		setItems(items);

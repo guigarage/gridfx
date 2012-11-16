@@ -1,13 +1,12 @@
 package com.guigarage.fx.grid.cell;
 
-import com.guigarage.fx.grid.GridCell;
-import com.guigarage.fx.grid.GridView;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.RectangleBuilder;
+
+import com.guigarage.fx.grid.GridCell;
 
 
 public class ColorGridCell extends GridCell<Color> {
@@ -15,7 +14,7 @@ public class ColorGridCell extends GridCell<Color> {
 	public ColorGridCell() {
 		getStyleClass().add("color-grid-cell");
 		//TODO: die Basis-Cells sollten einen eigenen Eintrag im CSS bekommen und nicht das setCssDependency nutzen
-		setCssDependency();
+//		setCssDependency();
 		itemProperty().addListener(new ChangeListener<Color>() {
 
 			@Override
@@ -27,13 +26,11 @@ public class ColorGridCell extends GridCell<Color> {
 						.stroke(Color.BLACK).build();
 				colorRect.heightProperty().bind(heightProperty());
 				colorRect.widthProperty().bind(widthProperty());
-				getChildren().add(colorRect);
+				
+				
+				//Hier war vorher getChilden().add(colorRect), das funktioniert allerdings nicht, da wir nach der CSS-Einführung einen Skin haben... Andere Möglichkeit wäre einen extra Skinf für das ganze zu schrieben, da hab ich aber kein Bock drauf 
+				setGraphic(colorRect);
 			}
 		});
-	}
-	
-	@Override
-	protected String getUserAgentStylesheet() {
-		return GridView.class.getResource("gridview.css").toExternalForm();
 	}
 }
