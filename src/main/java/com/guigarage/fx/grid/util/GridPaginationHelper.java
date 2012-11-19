@@ -32,6 +32,8 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 
 	private DoubleProperty verticalCellSpacing;
 
+	private ChangeListener<Number> defaultUpdateListener;
+	
 	@SuppressWarnings("unchecked")
 	public GridPaginationHelper(Pagination pagination,
 			final ObservableList<T> items,
@@ -46,6 +48,16 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 		this.pagination = pagination;
 		this.items = items;
 		this.gridCellFactory = gridCellFactory;
+		
+		defaultUpdateListener = new ChangeListener<Number>() {
+
+			@Override
+			public void changed(
+					ObservableValue<? extends Number> arg0,
+					Number arg1, Number arg2) {
+				update();
+			}
+		};
 
 		pageFactory = new Callback<Integer, Node>() {
 
@@ -72,46 +84,13 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 				gridView.horizontalCellSpacingProperty().bind(GridPaginationHelper.this.horizontalCellSpacingProperty());
 				gridView.verticalCellSpacingProperty().bind(GridPaginationHelper.this.verticalCellSpacingProperty());
 				
-				gridView.cellHeightProperty().addListener(
-						new ChangeListener<Number>() {
-
-							@Override
-							public void changed(
-									ObservableValue<? extends Number> arg0,
-									Number arg1, Number arg2) {
-								update();
-							}
-						});
-				gridView.cellWidthProperty().addListener(
-						new ChangeListener<Number>() {
-
-							@Override
-							public void changed(
-									ObservableValue<? extends Number> arg0,
-									Number arg1, Number arg2) {
-								update();
-							}
-						});
-				gridView.horizontalCellSpacingProperty().addListener(
-						new ChangeListener<Number>() {
-
-							@Override
-							public void changed(
-									ObservableValue<? extends Number> arg0,
-									Number arg1, Number arg2) {
-								update();
-							}
-						});
-				gridView.verticalCellSpacingProperty().addListener(
-						new ChangeListener<Number>() {
-
-							@Override
-							public void changed(
-									ObservableValue<? extends Number> arg0,
-									Number arg1, Number arg2) {
-								update();
-							}
-						});
+				
+				
+				gridView.cellHeightProperty().addListener(defaultUpdateListener);
+				gridView.cellWidthProperty().addListener(defaultUpdateListener);
+				gridView.horizontalCellSpacingProperty().addListener(defaultUpdateListener);
+				gridView.verticalCellSpacingProperty().addListener(defaultUpdateListener);
+				
 				return gridView;
 			}
 		};
@@ -134,24 +113,10 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 		});
 
 		//TODO: Eigentlich ist das nicht richtig, da die Pagination auch die NavigationNodes beinhaltet und die Seite daher kleiner ist. Task bei JavaFX-Jira aufmachen
-		pagination.widthProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> arg0,
-					Number arg1, Number arg2) {
-				update();
-			}
-		});
+		pagination.widthProperty().addListener(defaultUpdateListener);
 
 		//TODO: Eigentlich ist das nicht richtig, da die Pagination auch die NavigationNodes beinhaltet und die Seite daher kleiner ist. Task bei JavaFX-Jira aufmachen
-		pagination.heightProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> arg0,
-					Number arg1, Number arg2) {
-				update();
-			}
-		});
+		pagination.heightProperty().addListener(defaultUpdateListener);
 
 		pagination.setPageFactory(pageFactory);
 	}
