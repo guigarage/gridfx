@@ -16,14 +16,14 @@ import com.sun.javafx.scene.control.skin.SkinBase;
 public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> {
 
 	private ListChangeListener<T> itemsListener;
-	
+
 	private ChangeListener<Number> layoutListener;
-	
+
 	private ChangeListener<ObservableList<T>> itemListChangedListener;
-	
+
 	public GridViewSkin(GridView<T> control) {
 		super(control, new GridViewBehavior<>(control));
-		
+
 		layoutListener = new ChangeListener<Number>() {
 
 			@Override
@@ -33,7 +33,7 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 			}
 
 		};
-		
+
 		itemsListener = new ListChangeListener<T>() {
 			@Override
 			public void onChanged(Change<? extends T> change) {
@@ -63,8 +63,7 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 			@Override
 			public void changed(
 					ObservableValue<? extends ObservableList<T>> arg0,
-					ObservableList<T> oldList,
-					ObservableList<T> newList) {
+					ObservableList<T> oldList, ObservableList<T> newList) {
 				if (oldList != null) {
 					oldList.removeListener(itemsListener);
 				}
@@ -80,19 +79,21 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 		if (currentList != null) {
 			currentList.addListener(itemsListener);
 		}
-		
+
 		getSkinnable().cellHeightProperty().addListener(layoutListener);
 		getSkinnable().cellWidthProperty().addListener(layoutListener);
-		getSkinnable().verticalCellSpacingProperty().addListener(layoutListener);
-		getSkinnable().horizontalCellSpacingProperty().addListener(layoutListener);
-		
+		getSkinnable().verticalCellSpacingProperty()
+				.addListener(layoutListener);
+		getSkinnable().horizontalCellSpacingProperty().addListener(
+				layoutListener);
+
 		updateAllCells();
 	}
 
 	public void updateAllCells() {
 		getChildren().clear();
 		ObservableList<T> items = getSkinnable().getItems();
-		if(items != null) {
+		if (items != null) {
 			for (T item : items) {
 				GridCell<T> cell = createCell();
 				cell.setItem(item);
@@ -164,7 +165,8 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 			}
 			child.relocate(xPos, yPos);
 			child.resize(cellWidth, cellHeight);
-			xPos = xPos + cellWidth + horizontalCellSpacing + horizontalCellSpacing;
+			xPos = xPos + cellWidth + horizontalCellSpacing
+					+ horizontalCellSpacing;
 		}
 	}
 
@@ -180,18 +182,26 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 		return Orientation.HORIZONTAL;
 	}
 
-	@Override
-	protected double computeMinHeight(double width) {
+	protected double computeCellWidth() {
+		return getSkinnable().cellWidthProperty().doubleValue()
+				+ getSkinnable().horizontalCellSpacingProperty().doubleValue()
+				+ getSkinnable().horizontalCellSpacingProperty().doubleValue();
+	}
+	
+	protected double computeCellHeight() {
 		return getSkinnable().cellHeightProperty().doubleValue()
 				+ getSkinnable().verticalCellSpacingProperty().doubleValue()
 				+ getSkinnable().verticalCellSpacingProperty().doubleValue();
 	}
+	
+	@Override
+	protected double computeMinHeight(double width) {
+		return computeCellHeight();
+	}
 
 	@Override
 	protected double computeMinWidth(double height) {
-		return getSkinnable().cellWidthProperty().doubleValue()
-				+ getSkinnable().horizontalCellSpacingProperty().doubleValue()
-				+ getSkinnable().horizontalCellSpacingProperty().doubleValue();
+		return computeCellWidth();
 	}
 
 	@Override
@@ -206,35 +216,39 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 
 	@Override
 	protected double computePrefHeight(double width) {
-		double cellWidth = getSkinnable().cellWidthProperty().doubleValue();
-		double cellHeight = getSkinnable().cellHeightProperty().doubleValue();
-		double horizontalCellSpacing = getSkinnable()
-				.horizontalCellSpacingProperty().doubleValue();
-		double verticalCellSpacing = getSkinnable()
-				.verticalCellSpacingProperty().doubleValue();
-		double completeCellWidth = cellWidth + horizontalCellSpacing + horizontalCellSpacing;
-		double completeCellHeight = cellHeight + verticalCellSpacing + verticalCellSpacing;
-
-		double maxCellsInRow = width / completeCellWidth;
-		maxCellsInRow = Math.max(maxCellsInRow, 1);
-		int rowCount = (int)((double)getSkinnable().getItems().size() / (double)maxCellsInRow + 0.5d);
-		return rowCount * completeCellHeight;
+		int maxCellsInRow = computeMaxCellsInRow(width);
+		int rowCount = (int) ((double) getSkinnable().getItems().size()
+				/ (double) maxCellsInRow + 0.5d);
+		return rowCount * computeCellHeight();
 	}
 
 	@Override
 	protected double computePrefWidth(double height) {
-		double cellWidth = getSkinnable().cellWidthProperty().doubleValue();
-		double cellHeight = getSkinnable().cellHeightProperty().doubleValue();
-		double horizontalCellSpacing = getSkinnable()
-				.horizontalCellSpacingProperty().doubleValue();
-		double verticalCellSpacing = getSkinnable()
-				.verticalCellSpacingProperty().doubleValue();
-		double completeCellWidth = cellWidth + horizontalCellSpacing + horizontalCellSpacing;
-		double completeCellHeight = cellHeight + verticalCellSpacing + verticalCellSpacing;
+		int maxCellsInColumn = computeMaxCellsInColumn(height);
+		int columnCount = (int) ((double) getSkinnable().getItems().size()
+				/ (double) maxCellsInColumn + 0.5);
+		return columnCount * computeCellWidth();
+	}
 
-		int maxCellsInColumn = (int) (height / completeCellHeight - 0.5);
-		maxCellsInColumn = Math.max(maxCellsInColumn, 1);
-		int columnCount = (int)((double)getSkinnable().getItems().size() / (double)maxCellsInColumn + 0.5);
-		return columnCount * completeCellWidth;
+	public int getRowIndexForItem(int itemIndex) {
+		int maxCellsInRow = computeMaxCellsInRow();
+		return itemIndex / maxCellsInRow;
+	}
+	
+	public int getColumnIndexForItem(int itemIndex) {
+		int maxCellsInRow = computeMaxCellsInRow();
+		return itemIndex % maxCellsInRow;
+	}
+	
+	public int computeMaxCellsInRow() {
+		return computeMaxCellsInRow(getWidth());
+	}
+	
+	public int computeMaxCellsInRow(double width) {
+		return Math.max((int) (width / computeCellWidth()), 1);
+	}
+
+	public int computeMaxCellsInColumn(double height) {
+		return Math.max((int) (height / computeCellHeight()), 1);
 	}
 }
