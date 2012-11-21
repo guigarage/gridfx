@@ -151,28 +151,25 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 	protected void layoutChildren() {
 		super.layoutChildren();
 		double currentWidth = getWidth();
-		double cellWidth = getSkinnable().cellWidthProperty().doubleValue();
-		double cellHeight = getSkinnable().cellHeightProperty().doubleValue();
-		double horizontalCellSpacing = getSkinnable()
-				.horizontalCellSpacingProperty().doubleValue();
-		double verticalCellSpacing = getSkinnable()
-				.verticalCellSpacingProperty().doubleValue();
+		double cellWidth = getSkinnable().getCellWidth();
+		double cellHeight = getSkinnable().getCellHeight();
+		double horizontalCellSpacing = getSkinnable().getHorizontalCellSpacing();
+		double verticalCellSpacing = getSkinnable().getVerticalCellSpacing();
 
-		double xPos = horizontalCellSpacing;
-		double yPos = verticalCellSpacing;
+		double xPos = 0;
+		double yPos = 0;
 
 		for (Node child : getChildren()) {
 			if (xPos + horizontalCellSpacing + cellWidth
 					+ horizontalCellSpacing > currentWidth) {
-				// wir fangen in der nächsten Zeile am Anfang an
-				xPos = horizontalCellSpacing;
+				// new line
+				xPos = 0;
 				yPos = yPos + verticalCellSpacing + cellHeight
 						+ verticalCellSpacing;
 			}
-			child.relocate(xPos, yPos);
+			child.relocate(xPos + horizontalCellSpacing, yPos + verticalCellSpacing);
 			child.resize(cellWidth, cellHeight);
-			xPos = xPos + cellWidth + horizontalCellSpacing
-					+ horizontalCellSpacing;
+			xPos = xPos + horizontalCellSpacing + cellWidth + horizontalCellSpacing;;
 		}
 	}
 

@@ -102,7 +102,6 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 		verticalCellSpacingProperty().setValue(dummyGridView.getVerticalCellSpacing());
 		horizontalCellSpacingProperty().setValue(dummyGridView.getHorizontalCellSpacing());
 		
-		
 		items.addListener(new ListChangeListener<T>() {
 
 			@Override
@@ -121,26 +120,36 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 		pagination.setPageFactory(pageFactory);
 	}
 
+	private int lastMaxVisibleCellsPerPage = -1;
+	
+	private int lastMaxRowsPerPage = -1;
+	
 	private void update() {
+//		int firstCellOnPage = calcMaxVisibleCellsPerPage() * pagination.getCurrentPageIndex();
 		pagination.setPageCount(calcPageCount());
+//		pagination.setCurrentPageIndex((int) Math.floor(firstCellOnPage / calcMaxVisibleCellsPerPage()));
 	}
 
 	private int calcMaxVisibleCellsPerPage() {
-		double cellWidth = getCellWidth() + getHorizontalCellSpacing() + getHorizontalCellSpacing();
-		double cellHeight = getCellHeight() + getVerticalCellSpacing() + getVerticalCellSpacing();
-		int cellsInLine = (int) (pagination.getWidth() / cellWidth);
-		int maxLines = (int) (pagination.getHeight() / cellHeight);
-		return Math.max(1, cellsInLine * maxLines);
+		return Math.max(1, computeMaxCellsInOneRow() * computeMaxRowsPerPage());
 	}
 
+	private int computeMaxRowsPerPage() {
+		double cellHeight = getCellHeight() + getVerticalCellSpacing() + getVerticalCellSpacing();
+		return (int) Math.floor((pagination.getHeight() - 64) / cellHeight);
+	}
+	
+	private int computeMaxCellsInOneRow() {
+		double cellWidth = getHorizontalCellSpacing() + getCellWidth() + getHorizontalCellSpacing();
+		return (int) Math.floor(pagination.getWidth() / cellWidth);
+	}
+	
 	private int getCellStartIndexForPage(int pageIndex) {
-		int maxVisibleCellsPerPage = calcMaxVisibleCellsPerPage();
-		return maxVisibleCellsPerPage * pageIndex;
+		return calcMaxVisibleCellsPerPage() * pageIndex;
 	}
 
 	private int calcPageCount() {
-		int visibleCells = calcMaxVisibleCellsPerPage();
-		return items.size() / visibleCells;
+		return (int) Math.floor(items.size() / calcMaxVisibleCellsPerPage());
 	}
 
 	public void setHorizontalCellSpacing(double value) {
