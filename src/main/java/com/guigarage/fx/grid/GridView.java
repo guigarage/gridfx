@@ -6,7 +6,6 @@ import java.util.List;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.WritableValue;
 import javafx.collections.FXCollections;
@@ -119,6 +118,7 @@ public class GridView<T> extends Control {
 		if (alignment == null) {
 			alignment = new StyleableObjectProperty<Pos>(Pos.CENTER_LEFT) {
 
+				@SuppressWarnings("rawtypes")
 				@Override
 				public StyleableProperty getStyleableProperty() {
 					return StyleableProperties.ALIGNMENT;
@@ -182,6 +182,7 @@ public class GridView<T> extends Control {
 		return GridView.class.getResource("gridview.css").toExternalForm();
 	}
 
+	@SuppressWarnings({ "rawtypes", "deprecation" })
 	private static class StyleableProperties {
 
 		private static final StyleableProperty<GridView, Pos> ALIGNMENT = new StyleableProperty<GridView, Pos>(
@@ -193,6 +194,7 @@ public class GridView<T> extends Control {
 				return n.alignment == null || !n.alignment.isBound();
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public WritableValue<Pos> getWritableValue(GridView n) {
 				return n.alignmentProperty();
@@ -273,10 +275,12 @@ public class GridView<T> extends Control {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static List<StyleableProperty> impl_CSS_STYLEABLES() {
 		return GridView.StyleableProperties.STYLEABLES;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<StyleableProperty> impl_getStyleableProperties() {
 		return impl_CSS_STYLEABLES();
 	}
