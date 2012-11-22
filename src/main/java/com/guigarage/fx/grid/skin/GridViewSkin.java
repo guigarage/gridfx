@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 
@@ -155,15 +156,32 @@ public class GridViewSkin<T> extends SkinBase<GridView<T>, GridViewBehavior<T>> 
 		double cellHeight = getSkinnable().getCellHeight();
 		double horizontalCellSpacing = getSkinnable().getHorizontalCellSpacing();
 		double verticalCellSpacing = getSkinnable().getVerticalCellSpacing();
-
+		
 		double xPos = 0;
 		double yPos = 0;
-
+		
+		HPos currentHorizontalAlignment = getSkinnable().getHorizontalAlignment(); 
+		if(currentHorizontalAlignment != null) {
+			if(currentHorizontalAlignment.equals(HPos.CENTER)) {
+				xPos = (currentWidth % computeCellWidth()) / 2;
+			} else if(currentHorizontalAlignment.equals(HPos.RIGHT)) {
+				xPos = currentWidth % computeCellWidth();
+			}
+		}
+		
 		for (Node child : getChildren()) {
 			if (xPos + horizontalCellSpacing + cellWidth
 					+ horizontalCellSpacing > currentWidth) {
 				// new line
 				xPos = 0;
+				if(currentHorizontalAlignment != null) {
+					if(currentHorizontalAlignment.equals(HPos.CENTER)) {
+						xPos = (currentWidth % computeCellWidth()) / 2;
+					} else if(currentHorizontalAlignment.equals(HPos.RIGHT)) {
+						xPos = currentWidth % computeCellWidth();
+					}
+				}
+				
 				yPos = yPos + verticalCellSpacing + cellHeight
 						+ verticalCellSpacing;
 			}

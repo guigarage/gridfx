@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.WritableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
+import javafx.geometry.HPos;
 import javafx.scene.control.Control;
 import javafx.util.Callback;
 
@@ -36,7 +36,7 @@ public class GridView<T> extends Control {
 
 	private DoubleProperty verticalCellSpacing;
 
-	private ObjectProperty<Pos> alignment;
+	private ObjectProperty<HPos> horizontalAlignment;
 
 	public GridView() {
 		this(FXCollections.<T> observableArrayList());
@@ -114,14 +114,14 @@ public class GridView<T> extends Control {
 		return cellHeight == null ? 64.0 : cellHeight.get();
 	}
 
-	public final ObjectProperty<Pos> alignmentProperty() {
-		if (alignment == null) {
-			alignment = new StyleableObjectProperty<Pos>(Pos.CENTER_LEFT) {
+	public final ObjectProperty<HPos> horizontalAlignmentProperty() {
+		if (horizontalAlignment == null) {
+			horizontalAlignment = new StyleableObjectProperty<HPos>(HPos.CENTER) {
 
 				@SuppressWarnings("rawtypes")
 				@Override
 				public StyleableProperty getStyleableProperty() {
-					return StyleableProperties.ALIGNMENT;
+					return StyleableProperties.HORIZONTAL_ALIGNMENT;
 				}
 
 				@Override
@@ -131,19 +131,19 @@ public class GridView<T> extends Control {
 
 				@Override
 				public String getName() {
-					return "alignment";
+					return "horizontalAlignment";
 				}
 			};
 		}
-		return alignment;
+		return horizontalAlignment;
 	}
 
-	public final void setAlignment(Pos value) {
-		alignmentProperty().set(value);
+	public final void setHorizontalAlignment(HPos value) {
+		horizontalAlignmentProperty().set(value);
 	}
 
-	public final Pos getAlignment() {
-		return alignment == null ? Pos.TOP_CENTER : alignment.get();
+	public final HPos getHorizontalAlignment() {
+		return horizontalAlignment == null ? HPos.CENTER : horizontalAlignment.get();
 	}
 
 	public final ObjectProperty<Callback<GridView<T>, GridCell<T>>> cellFactoryProperty() {
@@ -185,24 +185,24 @@ public class GridView<T> extends Control {
 	@SuppressWarnings({ "rawtypes", "deprecation" })
 	private static class StyleableProperties {
 
-		private static final StyleableProperty<GridView, Pos> ALIGNMENT = new StyleableProperty<GridView, Pos>(
-				"-fx-alignment", new EnumConverter<Pos>(Pos.class),
-				Pos.TOP_CENTER) {
+		private static final StyleableProperty<GridView, HPos> HORIZONTAL_ALIGNMENT = new StyleableProperty<GridView, HPos>(
+				"-fx-horizontal-alignment", new EnumConverter<HPos>(HPos.class),
+				HPos.CENTER) {
 
 			@Override
 			public boolean isSettable(GridView n) {
-				return n.alignment == null || !n.alignment.isBound();
+				return n.horizontalAlignment == null || !n.horizontalAlignment.isBound();
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public WritableValue<Pos> getWritableValue(GridView n) {
-				return n.alignmentProperty();
+			public WritableValue<HPos> getWritableValue(GridView n) {
+				return n.horizontalAlignmentProperty();
 			}
 
 			@Override
-			public Pos getInitialValue(GridView n) {
-				return Pos.TOP_CENTER;
+			public HPos getInitialValue(GridView n) {
+				return HPos.CENTER;
 			}
 		};
 
@@ -269,7 +269,7 @@ public class GridView<T> extends Control {
 		static {
 			final List<StyleableProperty> styleables = new ArrayList<StyleableProperty>(
 					Control.impl_CSS_STYLEABLES());
-			Collections.addAll(styleables, ALIGNMENT, CELL_HEIGHT, CELL_WIDTH,
+			Collections.addAll(styleables, HORIZONTAL_ALIGNMENT, CELL_HEIGHT, CELL_WIDTH,
 					HORIZONTAL_CELL_SPACING, VERTICAL_CELL_SPACING);
 			STYLEABLES = Collections.unmodifiableList(styleables);
 		}
