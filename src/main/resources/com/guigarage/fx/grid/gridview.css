@@ -1,5 +1,9 @@
 .grid-view {
 	-fx-skin: "com.guigarage.fx.grid.skin.GridViewSkin";
+	-fx-vertical-cell-spacing: 12;
+	-fx-horizontal-cell-spacing: 12;
+	-fx-cell-height: 64;
+	-fx-cell-width: 64;
 }
 
 .grid-cell {

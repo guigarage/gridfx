@@ -120,14 +120,10 @@ public class GridPaginationHelper<T, U extends GridView<T>> {
 		pagination.setPageFactory(pageFactory);
 	}
 
-	private int lastMaxVisibleCellsPerPage = -1;
-	
-	private int lastMaxRowsPerPage = -1;
-	
 	private void update() {
-//		int firstCellOnPage = calcMaxVisibleCellsPerPage() * pagination.getCurrentPageIndex();
+		int firstCellOnPage = calcMaxVisibleCellsPerPage() * pagination.getCurrentPageIndex();
 		pagination.setPageCount(calcPageCount());
-//		pagination.setCurrentPageIndex((int) Math.floor(firstCellOnPage / calcMaxVisibleCellsPerPage()));
+		pagination.setCurrentPageIndex((int) Math.floor(firstCellOnPage / calcMaxVisibleCellsPerPage()));
 	}
 
 	private int calcMaxVisibleCellsPerPage() {
