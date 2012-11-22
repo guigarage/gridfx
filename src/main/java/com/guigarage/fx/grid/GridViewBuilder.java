@@ -16,6 +16,7 @@ public class GridViewBuilder<B extends GridViewBuilder<B,T>, T> implements
 	private static final String CELL_HEIGHT = "cellHeight";
 	private static final String HORIZONTAL_CELL_SPACING = "horizontalCellSpacing";
 	private static final String VERTICAL_CELL_SPACING = "verticalCellSpacing";
+	@SuppressWarnings("rawtypes")
 	private HashMap<String, Property> properties = new HashMap<String, Property>();
 
 	protected GridViewBuilder() {
@@ -56,6 +57,7 @@ public class GridViewBuilder<B extends GridViewBuilder<B,T>, T> implements
 		return this;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public GridView<T> build() {
 		final GridView<T> control = new GridView<>();
