@@ -13,8 +13,6 @@ public class ColorGridCell extends GridCell<Color> {
 	
 	public ColorGridCell() {
 		getStyleClass().add("color-grid-cell");
-		//TODO: die Basis-Cells sollten einen eigenen Eintrag im CSS bekommen und nicht das setCssDependency nutzen
-//		setCssDependency();
 		itemProperty().addListener(new ChangeListener<Color>() {
 
 			@Override
@@ -25,10 +23,7 @@ public class ColorGridCell extends GridCell<Color> {
 				Rectangle colorRect = RectangleBuilder.create().fill(arg2)
 						.stroke(Color.BLACK).build();
 				colorRect.heightProperty().bind(heightProperty());
-				colorRect.widthProperty().bind(widthProperty());
-				
-				
-				//Hier war vorher getChilden().add(colorRect), das funktioniert allerdings nicht, da wir nach der CSS-Einführung einen Skin haben... Andere Möglichkeit wäre einen extra Skinf für das ganze zu schrieben, da hab ich aber kein Bock drauf 
+				colorRect.widthProperty().bind(widthProperty());				
 				setGraphic(colorRect);
 			}
 		});

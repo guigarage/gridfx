@@ -8,7 +8,6 @@ public class GridCell<T> extends IndexedCell<T> {
 
 	public GridCell() {
 		getStyleClass().add("grid-cell");
-//		setCssDependency();
 	}
 	
 	public void setCssDependency() {

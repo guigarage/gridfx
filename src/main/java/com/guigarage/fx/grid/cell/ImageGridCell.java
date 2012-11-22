@@ -12,8 +12,6 @@ public class ImageGridCell extends GridCell<Image> {
 	
 	public ImageGridCell() {
 		getStyleClass().add("image-grid-cell");
-		//TODO: die Basis-Cells sollten einen eigenen Eintrag im CSS bekommen und nicht das setCssDependency nutzen
-//		setCssDependency();
 		itemProperty().addListener(new ChangeListener<Image>() {
 
 			@Override

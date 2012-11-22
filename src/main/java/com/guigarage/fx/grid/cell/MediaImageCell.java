@@ -16,8 +16,6 @@ public class MediaImageCell extends GridCell<Media> {
 	
 	public MediaImageCell() {
 		getStyleClass().add("media-grid-cell");
-		//TODO: die Basis-Cells sollten einen eigenen Eintrag im CSS bekommen und nicht das setCssDependency nutzen
-//		setCssDependency();
 		itemProperty().addListener(new ChangeListener<Media>() {
 
 			@Override

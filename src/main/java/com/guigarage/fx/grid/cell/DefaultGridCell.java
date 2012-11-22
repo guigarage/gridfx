@@ -8,8 +8,6 @@ import javafx.beans.value.ObservableValue;
 public class DefaultGridCell<T> extends GridCell<T> {
 
 	public DefaultGridCell() {
-		//TODO: die basis-Cells sollten einen eigenen EIntrag im CSS bekommen und nicht das setCssDependency nutzen
-		setCssDependency();
 		itemProperty().addListener(new ChangeListener<T>() {
 
 			@Override
